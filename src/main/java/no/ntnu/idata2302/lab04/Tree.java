@@ -8,6 +8,7 @@
 
 package no.ntnu.idata2302.lab04;
 
+import java.util.Stack;
 
 public class Tree {
     private Node root;
@@ -141,19 +142,98 @@ public class Tree {
         return parent;
     }
 
+
+
+
     public void inOrderTraversal() {
-        // TODO: implement in-order tree traversal, printing the items
-        throw new RuntimeException("Not yet implemented!");
+
+        /* If root is null, there are no children to traverse */
+        if (this.root == null) return;
+        /* 
+         Creates a stack which will contain the nodes 
+         we have traversed over  
+        */
+        Stack<Node> stack = new Stack<>();
+        /* 
+         Current node is the root before traversing
+         can begin.
+        */
+        Node current = this.root;
+
+        /* Starts traversing the tree */
+        while (current != null || !stack.isEmpty()) {
+
+            /* Reach the left most child-node of the current node */
+            while (current != null) {
+                /* Register the node in the stack */
+                stack.push(current);
+                /* Go to the left child of this node */
+                current = current.left;
+            }
+
+            /* Empties the stack after reaching the left most child-node */
+            current = stack.pop();
+            /* Prints out the item of this node */
+            System.out.print(current.item + " ");
+            /* Goes to the right node instead */
+            current = current.right; 
+        }
+        System.out.println();
     }
 
+
+
+
+
     public void postOrderTraversal() {
-        // TODO: implement post-order tree traversal, printing the items
-        throw new RuntimeException("Not yet implemented!");
+
+        Stack<Node> s1 = new Stack<>();
+        Stack<Node> s2 = new Stack<>();
+        Node current;
+
+        if (this.root == null) return;
+
+        s1.push(this.root);
+
+        while (!s1.empty()) {
+            current = s1.pop();
+            s2.push(current);
+
+            if (current.left != null) {
+                s1.push(current.left);
+            }
+            if (current.right != null) {
+                s1.push(current.right);
+            }
+        }
+
+        while (!s2.empty()) {
+            current = s2.pop();
+            System.out.print(current.item + " ");
+        }
+        System.out.println();
     }
 
     public void preOrderTraversal() {
-        // TODO: implement pre-order tree traversal, printing the items
-        throw new RuntimeException("Not yet implemented!");
+        if (this.root == null) return;
+
+        Stack<Node> stack = new Stack<>();
+        stack.push(this.root);
+
+        while (!stack.empty()) {
+
+            Node current = stack.peek();
+            System.out.print(current.item + " ");
+            stack.pop();
+
+            if (current.right != null) {
+                stack.push(current.right);
+            }
+            if (current.left != null) {
+                stack.push(current.left);
+            }
+        }
+        System.out.println();
     }
 
     public static void main(String[] args) {
