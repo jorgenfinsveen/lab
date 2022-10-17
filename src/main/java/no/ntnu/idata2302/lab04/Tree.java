@@ -1,3 +1,4 @@
+
 /*
  * This file is part of NTNU's IDATA2302 Lab 04.
  *
@@ -8,6 +9,7 @@
 
 package no.ntnu.idata2302.lab04;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Tree {
@@ -214,6 +216,8 @@ public class Tree {
         System.out.println();
     }
 
+
+    
     public void preOrderTraversal() {
         if (this.root == null) return;
 
@@ -239,16 +243,71 @@ public class Tree {
     public static void main(String[] args) {
         Tree t = new Tree();
     }
+
+    
+    /* function to print level order traversal of tree*/
+    public ArrayList<Character> printLevelOrder()
+    {
+        ArrayList<Character> list = new ArrayList<>();
+        int h = height(root);
+        int i;
+        for (i = 1; i <= h; i++) {
+            currentLevel(root, i, list);
+        }
+        return list;
+    }
+
+
+    /* Compute the "height" of a tree -- the number of
+    nodes along the longest path from the root node
+    down to the farthest leaf node.*/
+    private int height(Node root)
+    {
+        if (root == null)
+            return 0;
+        else {
+            /* compute  height of each subtree */
+            int lheight = height(root.left);
+            int rheight = height(root.right);
+
+            /* use the larger one */
+            if (lheight > rheight)
+                return (lheight + 1);
+            else
+                return (rheight + 1);
+        }
+    }
+
+    /* Print nodes at the current level */
+    private void currentLevel(Node root, int level, ArrayList<Character> list)
+    {
+        if (root == null) return;
+
+        if (level == 1) {
+            list.add( (char) root.item);
+        }
+        else if (level > 1) {
+            currentLevel(root.left, level - 1, list);
+            currentLevel(root.right, level - 1, list);
+        }
+    }
+
+    public Node getRoot() {
+        return this.root;
+    }
+
 }
 
 class Node {
+
     Node parent;
-    Node left;
-    Node right;
+    Node left = null;
+    Node right = null;
     int item;
 
-    Node(int item, Node parent) {
+    public Node(int item, Node parent) {
         this.item = item;
         this.parent = parent;
     }
 }
+
